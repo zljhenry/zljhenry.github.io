@@ -1,264 +1,258 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新年快乐！</title>
-    <style>
-        :root {
-            --bg-color: #000;
-            --accent-color: #FFD700; /* Gold */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新年祝福·牛福</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Microsoft YaHei", sans-serif;
+}
+body {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  color: #fff;
+}
 
-        body, html {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
-            overflow: hidden;
-            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
+#fireworksCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
 
-        /* --- Phase 1: Countdown --- */
-        #countdown-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-            z-index: 100;
-            position: relative;
-        }
+.container {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 50px 40px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 40px rgba(255,215,0,0.15);
+  width: 90%;
+  max-width: 650px;
+}
 
-        #countdown {
-            font-size: 40vmin;
-            font-weight: bold;
-            color: var(--accent-color);
-            text-shadow: 0 0 20px var(--accent-color), 0 0 50px var(--accent-color);
-            animation: pulse 1s infinite;
-            transform: scale(0.5);
-            opacity: 0;
-            transition: transform 0.5s, opacity 0.5s;
-        }
+.title {
+  font-size: 26px;
+  margin-bottom: 30px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255,215,0,0.4);
+}
 
-        /* --- Phase 2: Climax Effects --- */
-        .flash { animation: flash-bang 0.6s ease-out; }
-        .shake { animation: screen-shake 0.5s ease-out; }
+#blessing {
+  font-size: 28px;
+  line-height: 1.8;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
 
-        /* --- Phase 3: Greeting & Interactive Zone --- */
-        #greeting-container {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 2s;
-            z-index: 50;
-        }
+#blessing.active {
+  font-size: 32px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #ffd700, #fff, #ff4500);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 20px rgba(255,215,0,0.6);
+  transform: scale(1.08);
+}
 
-        #greeting {
-            font-size: 15vmin;
-            font-weight: bold;
-            color: var(--accent-color);
-            animation: intense-glow 2s infinite alternate;
-        }
+.btn-group {
+  margin-top: 30px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-        #interactive-zone {
-            margin-top: 20px;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-        }
+button {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-        #fortune-btn {
-            background-color: var(--accent-color);
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+#niuBtn {
+  background: linear-gradient(90deg, #ffd700, #ff6b35);
+  color: #000;
+}
 
-        #fortune-result {
-            margin-top: 15px;
-            font-size: 1.5em;
-            color: var(--accent-color);
-            height: 30px;
-        }
+#fullBoomBtn {
+  background: linear-gradient(90deg, #ff3c3c, #ff9500);
+  color: #fff;
+}
 
-        /* --- General Purpose Particles (Fireworks, Countdown Explosion) --- */
-        .particle {
-            position: absolute;
-            background-color: var(--color);
-            border-radius: 50%;
-            animation: explode 1.2s forwards;
-            pointer-events: none;
-        }
+#copyBtn {
+  background: linear-gradient(90deg, #00e5ff, #3a86ff);
+  color: #fff;
+}
 
-        /* --- Keyframes --- */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes explode {
-            0% {
-                transform: translate(0, 0) scale(1);
-                opacity: 1;
-            }
-            100% {
-                transform: translate(var(--x), var(--y)) scale(0);
-                opacity: 0;
-            }
-        }
-
-        @keyframes flash-bang {
-            0% { background-color: #fff; }
-            100% { background-color: var(--bg-color); }
-        }
-
-        @keyframes screen-shake {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-5px, 5px); }
-            50% { transform: translate(5px, -5px); }
-            75% { transform: translate(-5px, -5px); }
-        }
-
-        @keyframes intense-glow {
-            from { text-shadow: 0 0 10px #fff, 0 0 20px var(--accent-color), 0 0 35px var(--accent-color); }
-            to { text-shadow: 0 0 20px #fff, 0 0 40px var(--accent-color), 0 0 70px var(--accent-color); }
-        }
-    </style>
+button:hover {
+  transform: translateY(-4px);
+}
+</style>
 </head>
+
 <body>
+<canvas id="fireworksCanvas"></canvas>
 
-    <div id="countdown-container">
-        <div id="countdown"></div>
-    </div>
+<div class="container">
+  <div class="title">2026 码年快乐</div>
+  <div id="blessing">祝你新年平安喜乐，万事胜意，前程似锦！</div>
+  <div class="btn-group">
+    <button id="niuBtn">🐮 按下牛福</button>
+    <button id="fullBoomBtn">🎆 全屏烟花</button>
+    <button id="copyBtn">📋 复制祝福</button>
+  </div>
+</div>
 
-    <div id="greeting-container">
-        <h1 id="greeting">新年快乐</h1>
-        <div id="interactive-zone">
-            <button id="fortune-btn">抽取新年运势</button>
-            <div id="fortune-result"></div>
-        </div>
-    </div>
+<script>
+// 无限循环烟花版本（无警告）
+class Fireworks {
+  constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext('2d');
+    this.particles = [];
+    this.boomInterval = null;
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+    this.animate();
 
-    <script>
-        const countdownContainer = document.getElementById('countdown-container');
-        const countdownEl = document.getElementById('countdown');
-        const greetingContainer = document.getElementById('greeting-container');
-        
-        const fortuneBtn = document.getElementById('fortune-btn');
-        const fortuneResult = document.getElementById('fortune-result');
+    // 基础自动烟花（持续播放）
+    setInterval(() => {
+      this.create(Math.random()*this.canvas.width, Math.random()*this.canvas.height*0.8);
+    }, 300);
+  }
 
-        const fortunes = [
-            "大吉：龙年行大运，财源滚滚来！", "中吉：事业步步高，家庭乐陶陶。",
-            "小吉：偶有小确幸，日日是好日。", "上上签：心想事成，万事如意！",
-            "运势：新的一年，代码无BUG！"
-        ];
+  resize() {
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+  }
 
-        fortuneBtn.addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * fortunes.length);
-            fortuneResult.textContent = fortunes[randomIndex];
-        });
+  // 生成烟花粒子
+  create(x, y) {
+    const colors = ['#ffd700','#ff4500','#00e5ff','#fff','#ff0080'];
+    const c = colors[Math.random()*colors.length|0];
+    // 单组200个粒子，更密集
+    for(let i=0;i<200;i++){
+      const ang = Math.random()*Math.PI*2;
+      const speed = Math.random()*8+4;
+      this.particles.push({
+        x,y,
+        vx:Math.cos(ang)*speed,
+        vy:Math.sin(ang)*speed,
+        size:Math.random()*4+1,
+        color:c,
+        life:150,
+        decay:Math.random()*0.04+0.01
+      })
+    }
+  }
 
-        function createParticles(x, y, count, color, blastRadius) {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const angle = Math.random() * 360;
-                const distance = Math.random() * blastRadius + 50;
-                
-                const targetX = Math.cos(angle * Math.PI / 180) * distance;
-                const targetY = Math.sin(angle * Math.PI / 180) * distance;
+  animate() {
+    this.ctx.fillStyle = 'rgba(15,23,42,0.1)';
+    this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+    
+    for(let i=this.particles.length-1;i>=0;i--){
+      const p = this.particles[i];
+      p.vy += 0.06;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life -= p.decay;
+      p.size *= 0.98;
+      
+      if(p.life<=0||p.size<=0){
+        this.particles.splice(i,1);
+        continue;
+      }
+      
+      this.ctx.beginPath();
+      this.ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+      this.ctx.fillStyle = p.color;
+      this.ctx.fill();
+    }
+    
+    requestAnimationFrame(()=>this.animate());
+  }
 
-                particle.style.setProperty('--x', `${targetX}px`);
-                particle.style.setProperty('--y', `${targetY}px`);
-                particle.style.setProperty('--color', color);
-                
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                const size = Math.random() * 4 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
+  // 全屏烟花无限循环
+  fullBoomLoop() {
+    // 清除旧循环，避免叠加
+    if(this.boomInterval) clearInterval(this.boomInterval);
+    // 无限循环生成全屏烟花（50ms一次，持续不断）
+    this.boomInterval = setInterval(() => {
+      for(let i=0;i<30;i++){
+        const x = Math.random()*this.canvas.width;
+        const y = Math.random()*this.canvas.height;
+        this.create(x,y);
+      }
+    }, 50);
+  }
+}
 
-                document.body.appendChild(particle);
+const fw = new Fireworks(document.getElementById('fireworksCanvas'));
 
-                setTimeout(() => particle.remove(), 1200);
-            }
-        }
+const blessing = document.getElementById('blessing');
+const niuBtn = document.getElementById('niuBtn');
+const fullBoomBtn = document.getElementById('fullBoomBtn');
+const copyBtn = document.getElementById('copyBtn');
 
-        function startCountdown() {
-            let count = 10;
-            
-            const updateCountdown = () => {
-                if (count < 0) return;
-                
-                countdownEl.textContent = count;
-                countdownEl.style.transform = 'scale(1)';
-                countdownEl.style.opacity = '1';
-                
-                // Explode the number
-                const rect = countdownEl.getBoundingClientRect();
-                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 30, 'white', 100);
+// 只复制核心四句
+const copyText = `永远牛福
+永远不死
+永远无敌
+码年快乐`;
 
-                setTimeout(() => {
-                    countdownEl.style.transform = 'scale(0.5)';
-                    countdownEl.style.opacity = '0';
-                }, 800);
+// 按下牛福
+niuBtn.addEventListener('click', () => {
+  blessing.innerHTML = `zljhenry 祝您：<br>
+永远牛福<br>
+永远不死<br>
+永远无敌<br>
+码年快乐`;
+  blessing.classList.add('active');
+  fw.create(fw.canvas.width/2, fw.canvas.height/2);
+});
 
-                if (count === 0) {
-                    clearInterval(interval);
-                    triggerFinale();
-                }
-                count--;
-            };
-            
-            const interval = setInterval(updateCountdown, 1000);
-            updateCountdown(); // Initial call
-        }
+// 全屏烟花（纯循环，无任何提示）
+fullBoomBtn.addEventListener('click', () => {
+  fw.fullBoomLoop();
+});
 
-        function triggerFinale() {
-            // Hide countdown
-            countdownContainer.style.display = 'none';
-
-            // Screen effects
-            document.body.classList.add('flash');
-            document.body.classList.add('shake');
-            setTimeout(() => {
-                document.body.classList.remove('flash');
-                document.body.classList.remove('shake');
-            }, 600);
-
-            // Firework barrage
-            for (let i = 0; i < 15; i++) {
-                setTimeout(() => {
-                    const x = Math.random() * window.innerWidth;
-                    const y = Math.random() * window.innerHeight * 0.7;
-                    const colors = ['gold', '#ff4747', '#ffffff', '#42a5f5'];
-                    createParticles(x, y, 80, colors[Math.floor(Math.random() * colors.length)], 200);
-                }, i * 100);
-            }
-
-            // Show greeting
-            setTimeout(() => {
-                greetingContainer.style.opacity = '1';
-                // Start continuous background fireworks
-                setInterval(() => {
-                     const x = Math.random() * window.innerWidth;
-                     const y = Math.random() * window.innerHeight;
-                     createParticles(x, y, 50, 'rgba(255,255,255,0.2)', 150);
-                }, 2000);
-            }, 1000);
-        }
-
-        window.onload = startCountdown;
-    </script>
-
+// 复制功能
+copyBtn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(copyText);
+    alert('复制成功：\n' + copyText);
+  } catch (e) {
+    const textarea = document.createElement('textarea');
+    textarea.value = copyText;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('复制成功：\n' + copyText);
+  }
+});
+</script>
 </body>
 </html>
