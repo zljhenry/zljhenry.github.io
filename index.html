@@ -1,74 +1,264 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<title>第六学部贺词</title>
-<style>
-img {
-	display:block;
-	margin:auto;
-}
-html,body{
-	width:95%;
-	height:95%;
-}
-body {
-	/*background-image: linear-gradient(135deg,#7A88FF,#7AFFAF);*/
-	background-color:#7A88FF;
-	animation: bg-color 10s infinite;
-	-webkit-animation: bg-color 10s infinite;
-}
-#p3 {
-	color:black;
-	text-align:center;
-	text-shadow:1px 1px white;
-}
-#p2 {
-	color:pink;
-	text-align:center;
-	text-shadow:2px 2px purple;
-}
-#p1 {
-	text-align:center;
-	font-weight:bolder;
-	font-size:20px;
-	color:white;
-	text-shadow:3px 3px #7A88FF;
-	border-style:dashed;
-	border-color:white;
-	border-width:5px;
-}
-@-webkit-keyframes bg-color {
-	0% {background-color:#7A88FF;}
-	50% {background-color:#7AFFAF;}
-	100% {background-color:#7A88FF;}
-}
-@keyframes bg-color {
-	0% {background-color:#7A88FF;}
-	50% {background-color:#7AFFAF;}
-	100% {background-color:#7A88FF;}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新年快乐！</title>
+    <style>
+        :root {
+            --bg-color: #000;
+            --accent-color: #FFD700; /* Gold */
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            overflow: hidden;
+            font-family: 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        /* --- Phase 1: Countdown --- */
+        #countdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            z-index: 100;
+            position: relative;
+        }
+
+        #countdown {
+            font-size: 40vmin;
+            font-weight: bold;
+            color: var(--accent-color);
+            text-shadow: 0 0 20px var(--accent-color), 0 0 50px var(--accent-color);
+            animation: pulse 1s infinite;
+            transform: scale(0.5);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        /* --- Phase 2: Climax Effects --- */
+        .flash { animation: flash-bang 0.6s ease-out; }
+        .shake { animation: screen-shake 0.5s ease-out; }
+
+        /* --- Phase 3: Greeting & Interactive Zone --- */
+        #greeting-container {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 2s;
+            z-index: 50;
+        }
+
+        #greeting {
+            font-size: 15vmin;
+            font-weight: bold;
+            color: var(--accent-color);
+            animation: intense-glow 2s infinite alternate;
+        }
+
+        #interactive-zone {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+        }
+
+        #fortune-btn {
+            background-color: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #fortune-result {
+            margin-top: 15px;
+            font-size: 1.5em;
+            color: var(--accent-color);
+            height: 30px;
+        }
+
+        /* --- General Purpose Particles (Fireworks, Countdown Explosion) --- */
+        .particle {
+            position: absolute;
+            background-color: var(--color);
+            border-radius: 50%;
+            animation: explode 1.2s forwards;
+            pointer-events: none;
+        }
+
+        /* --- Keyframes --- */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes flash-bang {
+            0% { background-color: #fff; }
+            100% { background-color: var(--bg-color); }
+        }
+
+        @keyframes screen-shake {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-5px, 5px); }
+            50% { transform: translate(5px, -5px); }
+            75% { transform: translate(-5px, -5px); }
+        }
+
+        @keyframes intense-glow {
+            from { text-shadow: 0 0 10px #fff, 0 0 20px var(--accent-color), 0 0 35px var(--accent-color); }
+            to { text-shadow: 0 0 20px #fff, 0 0 40px var(--accent-color), 0 0 70px var(--accent-color); }
+        }
+    </style>
 </head>
-
 <body>
-	
 
-<p id="p1">第六学部预祝此次活动圆满成功</p>
-	<br>
-<p id="p2">执拗的花朵不会因为暴雨而褪去其颜色，你的坚毅也一定能在绝境中绽放真我</p>
-<p id="p2">此后，将有群星闪耀，因为我如今来过</p>
-<p id="p2">此后，将有百花绽放，因为我从未离去</p>
-	<br><br>
-<img src="https://img.zcool.cn/community/01ff045f905eda11013f3110ef761d.jpg@1280w_1l_2o_100sh.jpg" alt="青岛二中院士港分校" width="330"  align="middle">
-<p id="p3">青岛二中院士港分校↑</p>
-	<br><br><br><br>
-<script async src="https://cdn.ly522.com/js/jilei.pure.mini.js"></script> 
-<span id="jilei_container_site_pv">本站总访问量<span id="jilei_value_site_pv"></span>次</span> 
-<span class="post-meta-divider">|</span> 
-<span id="jilei_container_site_uv">本站访客数<span id="jilei_value_site_uv"></span>人</span></p>
+    <div id="countdown-container">
+        <div id="countdown"></div>
+    </div>
 
-	
-	
+    <div id="greeting-container">
+        <h1 id="greeting">新年快乐</h1>
+        <div id="interactive-zone">
+            <button id="fortune-btn">抽取新年运势</button>
+            <div id="fortune-result"></div>
+        </div>
+    </div>
+
+    <script>
+        const countdownContainer = document.getElementById('countdown-container');
+        const countdownEl = document.getElementById('countdown');
+        const greetingContainer = document.getElementById('greeting-container');
+        
+        const fortuneBtn = document.getElementById('fortune-btn');
+        const fortuneResult = document.getElementById('fortune-result');
+
+        const fortunes = [
+            "大吉：龙年行大运，财源滚滚来！", "中吉：事业步步高，家庭乐陶陶。",
+            "小吉：偶有小确幸，日日是好日。", "上上签：心想事成，万事如意！",
+            "运势：新的一年，代码无BUG！"
+        ];
+
+        fortuneBtn.addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            fortuneResult.textContent = fortunes[randomIndex];
+        });
+
+        function createParticles(x, y, count, color, blastRadius) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const angle = Math.random() * 360;
+                const distance = Math.random() * blastRadius + 50;
+                
+                const targetX = Math.cos(angle * Math.PI / 180) * distance;
+                const targetY = Math.sin(angle * Math.PI / 180) * distance;
+
+                particle.style.setProperty('--x', `${targetX}px`);
+                particle.style.setProperty('--y', `${targetY}px`);
+                particle.style.setProperty('--color', color);
+                
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                const size = Math.random() * 4 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+
+                document.body.appendChild(particle);
+
+                setTimeout(() => particle.remove(), 1200);
+            }
+        }
+
+        function startCountdown() {
+            let count = 10;
+            
+            const updateCountdown = () => {
+                if (count < 0) return;
+                
+                countdownEl.textContent = count;
+                countdownEl.style.transform = 'scale(1)';
+                countdownEl.style.opacity = '1';
+                
+                // Explode the number
+                const rect = countdownEl.getBoundingClientRect();
+                createParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, 30, 'white', 100);
+
+                setTimeout(() => {
+                    countdownEl.style.transform = 'scale(0.5)';
+                    countdownEl.style.opacity = '0';
+                }, 800);
+
+                if (count === 0) {
+                    clearInterval(interval);
+                    triggerFinale();
+                }
+                count--;
+            };
+            
+            const interval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Initial call
+        }
+
+        function triggerFinale() {
+            // Hide countdown
+            countdownContainer.style.display = 'none';
+
+            // Screen effects
+            document.body.classList.add('flash');
+            document.body.classList.add('shake');
+            setTimeout(() => {
+                document.body.classList.remove('flash');
+                document.body.classList.remove('shake');
+            }, 600);
+
+            // Firework barrage
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight * 0.7;
+                    const colors = ['gold', '#ff4747', '#ffffff', '#42a5f5'];
+                    createParticles(x, y, 80, colors[Math.floor(Math.random() * colors.length)], 200);
+                }, i * 100);
+            }
+
+            // Show greeting
+            setTimeout(() => {
+                greetingContainer.style.opacity = '1';
+                // Start continuous background fireworks
+                setInterval(() => {
+                     const x = Math.random() * window.innerWidth;
+                     const y = Math.random() * window.innerHeight;
+                     createParticles(x, y, 50, 'rgba(255,255,255,0.2)', 150);
+                }, 2000);
+            }, 1000);
+        }
+
+        window.onload = startCountdown;
+    </script>
+
 </body>
 </html>
