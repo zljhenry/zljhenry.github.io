@@ -31,31 +31,33 @@ body {
   z-index: 1;
 }
 
+/* 适配手机端：缩小容器尺寸，调整内边距 */
 .container {
   position: relative;
   z-index: 2;
   background: rgba(255,255,255,0.07);
   backdrop-filter: blur(12px);
-  border-radius: 20px;
-  padding: 50px 40px;
+  border-radius: 16px;
+  padding: 30px 20px; /* 手机端减少内边距 */
   text-align: center;
   border: 1px solid rgba(255,255,255,0.1);
   box-shadow: 0 0 40px rgba(255,215,0,0.15);
-  width: 90%;
-  max-width: 650px;
+  width: 85%; /* 手机端宽度更窄 */
+  max-width: 500px; /* 降低最大宽度，适配手机 */
 }
 
 .title {
-  font-size: 26px;
-  margin-bottom: 30px;
+  font-size: 20px; /* 缩小标题字体 */
+  margin-bottom: 20px;
   color: #ffd700;
   text-shadow: 0 0 10px rgba(255,215,0,0.4);
 }
 
+/* 文本框适配手机：缩小字体，降低最小高度 */
 #blessing {
-  font-size: 28px;
-  line-height: 1.8;
-  min-height: 160px;
+  font-size: 22px; /* 手机端基础字体缩小 */
+  line-height: 1.6;
+  min-height: 120px; /* 降低最小高度，文本框更小 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,29 +65,30 @@ body {
 }
 
 #blessing.active {
-  font-size: 32px;
+  font-size: 26px; /* 激活后字体也适配手机 */
   font-weight: bold;
   background: linear-gradient(90deg, #ffd700, #fff, #ff4500);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   text-shadow: 0 0 20px rgba(255,215,0,0.6);
-  transform: scale(1.08);
+  transform: scale(1.05); /* 缩小缩放比例 */
 }
 
 .btn-group {
-  margin-top: 30px;
+  margin-top: 25px;
   display: flex;
-  gap: 16px;
+  gap: 12px; /* 缩小按钮间距 */
   justify-content: center;
   flex-wrap: wrap;
 }
 
+/* 按钮适配手机：缩小尺寸 */
 button {
-  padding: 14px 32px;
+  padding: 12px 24px; /* 缩小按钮内边距 */
   border: none;
   border-radius: 50px;
-  font-size: 18px;
+  font-size: 16px; /* 缩小按钮字体 */
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
@@ -103,6 +106,24 @@ button {
 
 button:hover {
   transform: translateY(-4px);
+}
+
+/* 针对小屏手机的额外适配 */
+@media (max-width: 375px) {
+  .container {
+    width: 90%;
+    padding: 20px 15px;
+  }
+  #blessing {
+    font-size: 20px;
+  }
+  #blessing.active {
+    font-size: 24px;
+  }
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 }
 </style>
 </head>
@@ -209,7 +230,7 @@ const blessing = document.getElementById('blessing');
 const niuBtn = document.getElementById('niuBtn');
 const fullBoomBtn = document.getElementById('fullBoomBtn');
 
-// 统一的祝福语切换函数（按下牛福和全屏烟花都调用）
+// 统一的祝福语切换函数（删除了"永远不死"）
 function switchBlessing() {
   blessing.innerHTML = `zljhenry 祝您：<br>
 永远牛福<br>
