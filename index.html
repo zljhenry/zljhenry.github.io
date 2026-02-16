@@ -101,11 +101,6 @@ button {
   color: #fff;
 }
 
-#copyBtn {
-  background: linear-gradient(90deg, #00e5ff, #3a86ff);
-  color: #fff;
-}
-
 button:hover {
   transform: translateY(-4px);
 }
@@ -121,12 +116,11 @@ button:hover {
   <div class="btn-group">
     <button id="niuBtn">🐮 按下牛福</button>
     <button id="fullBoomBtn">🎆 全屏烟花</button>
-    <button id="copyBtn">📋 复制祝福</button>
   </div>
 </div>
 
 <script>
-// 无限循环烟花版本（无警告）
+// 无限循环烟花版本
 class Fireworks {
   constructor(canvas) {
     this.canvas = canvas;
@@ -214,44 +208,28 @@ const fw = new Fireworks(document.getElementById('fireworksCanvas'));
 const blessing = document.getElementById('blessing');
 const niuBtn = document.getElementById('niuBtn');
 const fullBoomBtn = document.getElementById('fullBoomBtn');
-const copyBtn = document.getElementById('copyBtn');
 
-// 只复制核心四句
-const copyText = `永远牛福
-永远不死
-永远无敌
-码年快乐`;
-
-// 按下牛福
-niuBtn.addEventListener('click', () => {
+// 统一的祝福语切换函数（按下牛福和全屏烟花都调用）
+function switchBlessing() {
   blessing.innerHTML = `zljhenry 祝您：<br>
 永远牛福<br>
 永远不死<br>
 永远无敌<br>
 码年快乐`;
   blessing.classList.add('active');
+  // 同时触发中心烟花
   fw.create(fw.canvas.width/2, fw.canvas.height/2);
+}
+
+// 按下牛福：切换祝福语+中心烟花
+niuBtn.addEventListener('click', () => {
+  switchBlessing();
 });
 
-// 全屏烟花（纯循环，无任何提示）
+// 全屏烟花：切换祝福语+文字特效 + 无限循环全屏烟花
 fullBoomBtn.addEventListener('click', () => {
-  fw.fullBoomLoop();
-});
-
-// 复制功能
-copyBtn.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(copyText);
-    alert('复制成功：\n' + copyText);
-  } catch (e) {
-    const textarea = document.createElement('textarea');
-    textarea.value = copyText;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-    alert('复制成功：\n' + copyText);
-  }
+  switchBlessing(); // 和按下牛福一样的祝福语+文字效果
+  fw.fullBoomLoop(); // 启动全屏烟花无限循环
 });
 </script>
 </body>
